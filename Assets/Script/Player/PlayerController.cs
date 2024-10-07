@@ -12,7 +12,9 @@ public class PlayerController : MonoBehaviour
     private float horizontal; // x
     private float vertical; // y
 
+    [SerializeField]
     private Rigidbody2D rb;
+    private Vector3 moveDir;
 
     // アニメーション
     [SerializeField]
@@ -29,6 +31,22 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // 仮移動
+        horizontal = Input.GetAxisRaw("Horizontal");
+        vertical = Input.GetAxisRaw("Vertical");
+        // 斜め移動しないようにする
+        if(horizontal!=0)
+        {
+            vertical = 0;
+        }
+        moveDir = new Vector3(horizontal, vertical).normalized;
     }
+    // 一定時間毎に呼ばれる関数
+    void FixedUpdate()
+    {
+        //rigidbody2d.velocity = moveDir * moveSpeed * Time.deltaTime;
+        rb.velocity = moveDir * moveSpeed * Time.fixedDeltaTime;
+
+    }
+
 }
